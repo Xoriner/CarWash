@@ -6,17 +6,31 @@ import pl.edu.pwr.mrodak.jp.lab04.models.Controller;
 import java.util.concurrent.*;
 
 public class CarWashSimulation {
+    private BlockingQueue<Car> entranceQueue1;
+    private BlockingQueue<Car> entranceQueue2;
+
+    public BlockingQueue<Car> getShortestQueue() {
+        if (entranceQueue1.size() > entranceQueue2.size()) {
+            return entranceQueue2;
+        } else {
+            return entranceQueue1;
+        }
+    }
+
+    public BlockingQueue<Car> getEntranceQueue1() {
+        return entranceQueue1;
+    }
 
     public void runSimulation() {
         System.out.println("Simulation is running...");
 
         // Parameters of Simulation
-        int numberOfCars = 3;
-        int numStations = 2;
+        int numberOfCars = 6;
+        int numStations = 3;
 
         // Queues to the Entrance
-        BlockingQueue<Car> entranceQueue1 = new LinkedBlockingQueue<>();
-        BlockingQueue<Car> entranceQueue2 = new LinkedBlockingQueue<>();
+        entranceQueue1 = new LinkedBlockingQueue<>();
+        entranceQueue2 = new LinkedBlockingQueue<>();
 
         // Creating Washing Stations
         Semaphore[] stations = new Semaphore[numStations];
@@ -34,7 +48,8 @@ public class CarWashSimulation {
 
         // Create and start Car threads
         for (int i = 0; i < numberOfCars; i++) {
-            Car car = new Car(i, entranceQueue1, entranceQueue2);
+            BlockingQueue<Car> shortestQueue = getShortestQueue();
+            Car car = new Car(i, shortestQueue);
             carThreadPool.submit(car);
             try {
                 // Sleep for 1 second plus a random amount of time (0 to 1000 milliseconds)
@@ -64,6 +79,5 @@ public class CarWashSimulation {
         entranceQueue2 = null;
         stations = null;
         controller = null;
-
     }
 }
