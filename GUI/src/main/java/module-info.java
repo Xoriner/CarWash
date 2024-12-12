@@ -1,2 +1,3 @@
 module GUI {
+    requires AppLogic;
 }
