@@ -28,36 +28,53 @@ public class Controller implements Runnable {
             while (running.get()) {
                 Car car = null;
                 if (toggle) {
-                    car = queue1.poll();
+                    if (!queue1.isEmpty()) {
+                        car = queue1.element();
+                    }
                     toggle = false;
                 } else {
-                    car = queue2.poll();
+                    if (!queue2.isEmpty()) {
+                        car = queue2.element();
+                    }
                     toggle = true;
                 }
 
                 boolean stationFound = false;
+                int foundStationId = 0;
                 if (car != null) {
                     for (int i = 0; i < stations.length; i++) {
                         if (stations[i].tryAcquire()) {
-                            synchronized (car) {
-                                System.out.println("Controller let car " + car.getId() + " into station " + i);
-                                car.setStationId(i);
-                                car.notify();
-                            }
-
-                            // Schedule the release of the station after some time
-                            final int stationIndex = i;
-                            scheduler.schedule(() -> {
-                                stations[stationIndex].release();
-                                System.out.println("Station " + (stationIndex + 1) + " is now free.");
-                            }, 10, TimeUnit.SECONDS);
+                            stationFound = true;
+                            foundStationId = i;
                             break;
                         }
                     }
-
                 }
+
+                if (stationFound) {
+                    // remove the car from the queue
+                    if (!toggle) {
+                        queue1.poll();
+                    } else {
+                        queue2.poll();
+                    }
+                    // synchronize on the car object to notify the car
+                    synchronized (car) {
+                        System.out.println("Controller let car " + car.getId() + " into station " + foundStationId);
+                        car.setStationId(foundStationId);
+                        car.notify();
+                    }
+
+                    // Schedule the release of the station
+                    int finalFoundStationId = foundStationId;
+                    scheduler.schedule(() -> {
+                        stations[finalFoundStationId].release();
+                        System.out.println("Station " + finalFoundStationId + " is now free.");
+                    }, 10, TimeUnit.SECONDS);
+                }
+
                 // Sleep to simulate time taken to process each car
-                Thread.sleep(1000);
+                Thread.sleep(100);
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
