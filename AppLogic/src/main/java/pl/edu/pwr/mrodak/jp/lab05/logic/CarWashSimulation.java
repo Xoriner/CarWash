@@ -26,7 +26,7 @@ public class CarWashSimulation {
         System.out.println("Simulation is running...");
 
         // Parameters of Simulation
-        int numberOfCars = 6;
+        int numberOfCars = 10;
         int numStations = 3;
 
         // Queues to the Entrance

@@ -26,19 +26,14 @@ public class Controller implements Runnable {
     public void run() {
         try {
             while (running.get()) {
-                Car car = null;
-                if (toggle) {
-                    car = queue1.peek(); // Retrieves, but does not remove, the head of this queue, or returns null if this queue is empty.
-                    toggle = false;
-                } else {
-                    car = queue2.peek(); // .element() would throw an exception if the queue is empty
-                    toggle = true;
-                }
+                Car car = getNextCarFromQueues(); // get the next car from the queues
 
                 boolean stationFound = false;
                 int foundStationId = 0;
                 if (car != null) {
                     for (int i = 0; i < stations.length; i++) {
+                        // we use tryAcquire() because Acquire() would block the thread until that specific Station is available
+                        // other Stations might get released first and we want to check if the car can be assigned to any of them
                         if (stations[i].getSemaphore().tryAcquire()) {
                             stationFound = true;
                             foundStationId = i;
@@ -49,11 +44,7 @@ public class Controller implements Runnable {
 
                 if (stationFound) {
                     // remove the car from the queue
-                    if (!toggle) {
-                        queue1.poll();
-                    } else {
-                        queue2.poll();
-                    }
+                    removeCarFromQueue();
 
                     // synchronize on the car object to notify the car
                     synchronized (car) {
@@ -77,4 +68,25 @@ public class Controller implements Runnable {
             Thread.currentThread().interrupt();
         }
     }
+
+    private Car getNextCarFromQueues() {
+        Car car = null;
+        if (toggle) {
+            car = queue1.peek();
+            toggle = false;
+        } else {
+            car = queue2.peek();
+            toggle = true;
+        }
+        return car;
+    }
+
+    private void removeCarFromQueue() {
+        if (!toggle) {
+            queue1.poll();
+        } else {
+            queue2.poll();
+        }
+    }
+
 }
