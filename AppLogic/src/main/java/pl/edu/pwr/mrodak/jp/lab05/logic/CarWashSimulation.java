@@ -2,6 +2,7 @@ package pl.edu.pwr.mrodak.jp.lab05.logic;
 
 import pl.edu.pwr.mrodak.jp.lab05.models.Car;
 import pl.edu.pwr.mrodak.jp.lab05.models.Controller;
+import pl.edu.pwr.mrodak.jp.lab05.models.Station;
 
 import java.util.concurrent.*;
 
@@ -33,9 +34,9 @@ public class CarWashSimulation {
         entranceQueue2 = new LinkedBlockingQueue<>();
 
         // Creating Washing Stations
-        Semaphore[] stations = new Semaphore[numStations];
+        Station[] stations = new Station[numStations];
         for (int i = 0; i < numStations; i++) {
-            stations[i] = new Semaphore(1, true);
+            stations[i] = new Station();
         }
 
         // Create and start the Controller

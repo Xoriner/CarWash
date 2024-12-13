@@ -6,12 +6,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Controller implements Runnable {
     private final BlockingQueue<Car> queue1;
     private final BlockingQueue<Car> queue2;
-    private final Semaphore[] stations;
+    private final Station[] stations;
     private final AtomicBoolean running = new AtomicBoolean(true); // to run until shutdown
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private boolean toggle = true; // To alternate between queues
 
-    public Controller(BlockingQueue<Car> queue1, BlockingQueue<Car> queue2, Semaphore[] stations) {
+    public Controller(BlockingQueue<Car> queue1, BlockingQueue<Car> queue2, Station[] stations) {
         this.queue1 = queue1;
         this.queue2 = queue2;
         this.stations = stations;
@@ -39,7 +39,7 @@ public class Controller implements Runnable {
                 int foundStationId = 0;
                 if (car != null) {
                     for (int i = 0; i < stations.length; i++) {
-                        if (stations[i].tryAcquire()) {
+                        if (stations[i].getSemaphore().tryAcquire()) {
                             stationFound = true;
                             foundStationId = i;
                             break;
@@ -65,7 +65,7 @@ public class Controller implements Runnable {
                     // Schedule the release of the station
                     int finalFoundStationId = foundStationId;
                     scheduler.schedule(() -> {
-                        stations[finalFoundStationId].release();
+                        stations[finalFoundStationId].getSemaphore().release();
                         System.out.println("Station " + finalFoundStationId + " is now free.");
                     }, 10, TimeUnit.SECONDS);
                 }
