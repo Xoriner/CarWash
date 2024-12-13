@@ -9,7 +9,7 @@ public class Controller implements Runnable {
     private final Semaphore[] stations;
     private final AtomicBoolean running = new AtomicBoolean(true); // to run until shutdown
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private boolean toggle = false; // To alternate between queues
+    private boolean toggle = true; // To alternate between queues
 
     public Controller(BlockingQueue<Car> queue1, BlockingQueue<Car> queue2, Semaphore[] stations) {
         this.queue1 = queue1;
@@ -28,14 +28,10 @@ public class Controller implements Runnable {
             while (running.get()) {
                 Car car = null;
                 if (toggle) {
-                    if (!queue1.isEmpty()) {
-                        car = queue1.element();
-                    }
+                    car = queue1.peek(); // Retrieves, but does not remove, the head of this queue, or returns null if this queue is empty.
                     toggle = false;
                 } else {
-                    if (!queue2.isEmpty()) {
-                        car = queue2.element();
-                    }
+                    car = queue2.peek(); // .element() would throw an exception if the queue is empty
                     toggle = true;
                 }
 
@@ -49,7 +45,7 @@ public class Controller implements Runnable {
                             break;
                         }
                     }
-                }
+               }
 
                 if (stationFound) {
                     // remove the car from the queue
@@ -58,6 +54,7 @@ public class Controller implements Runnable {
                     } else {
                         queue2.poll();
                     }
+
                     // synchronize on the car object to notify the car
                     synchronized (car) {
                         System.out.println("Controller let car " + car.getId() + " into station " + foundStationId);
