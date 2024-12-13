@@ -1,7 +1,7 @@
-package pl.edu.pwr.mrodak.jp.lab04.logic;
+package pl.edu.pwr.mrodak.jp.lab05.logic;
 
-import pl.edu.pwr.mrodak.jp.lab04.models.Car;
-import pl.edu.pwr.mrodak.jp.lab04.models.Controller;
+import pl.edu.pwr.mrodak.jp.lab05.models.Car;
+import pl.edu.pwr.mrodak.jp.lab05.models.Controller;
 
 import java.util.concurrent.*;
 

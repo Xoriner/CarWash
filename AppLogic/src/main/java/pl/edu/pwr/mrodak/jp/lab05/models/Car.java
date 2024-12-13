@@ -1,4 +1,4 @@
-package pl.edu.pwr.mrodak.jp.lab04.models;
+package pl.edu.pwr.mrodak.jp.lab05.models;
 
 import java.util.concurrent.BlockingQueue;
 

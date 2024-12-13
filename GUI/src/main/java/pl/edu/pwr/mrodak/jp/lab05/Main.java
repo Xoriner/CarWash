@@ -1,6 +1,6 @@
-package pl.edu.pwr.mrodak.jp.lab04;
+package pl.edu.pwr.mrodak.jp.lab05;
 
-import pl.edu.pwr.mrodak.jp.lab04.logic.CarWashSimulation;
+import pl.edu.pwr.mrodak.jp.lab05.logic.CarWashSimulation;
 public class Main {
     public static void main(String[] args) {
         CarWashSimulation Simulation = new CarWashSimulation();
