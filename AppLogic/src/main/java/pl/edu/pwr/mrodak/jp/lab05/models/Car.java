@@ -5,7 +5,7 @@ import java.util.concurrent.BlockingQueue;
 public class Car implements Runnable {
     private final int id;
     private final BlockingQueue<Car> entranceQueue;
-    private int stationId;
+    private int assignedStationId;
 
     public Car(int id, BlockingQueue<Car> entranceQueue) {
         this.id = id;
@@ -13,12 +13,12 @@ public class Car implements Runnable {
     }
 
 
-    public void setStationId(int stationId) {
-        this.stationId = stationId;
+    public void setAssignedStationId(int assignedStationId) {
+        this.assignedStationId = assignedStationId;
     }
 
-    public int getStationId() {
-        return stationId;
+    public int getAssignedStationId() {
+        return assignedStationId;
     }
 
     public int getId() {

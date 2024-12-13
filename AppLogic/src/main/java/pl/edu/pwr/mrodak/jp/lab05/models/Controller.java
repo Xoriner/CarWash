@@ -58,7 +58,7 @@ public class Controller implements Runnable {
                     // synchronize on the car object to notify the car
                     synchronized (car) {
                         System.out.println("Controller let car " + car.getId() + " into station " + foundStationId);
-                        car.setStationId(foundStationId);
+                        car.setAssignedStationId(foundStationId);
                         car.notify();
                     }
 
