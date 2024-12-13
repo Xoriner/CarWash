@@ -2,6 +2,7 @@ package pl.edu.pwr.mrodak.jp.lab05.logic;
 
 import pl.edu.pwr.mrodak.jp.lab05.models.Car;
 import pl.edu.pwr.mrodak.jp.lab05.models.Controller;
+import pl.edu.pwr.mrodak.jp.lab05.models.Hose;
 import pl.edu.pwr.mrodak.jp.lab05.models.Station;
 
 import java.util.concurrent.*;
@@ -26,18 +27,27 @@ public class CarWashSimulation {
         System.out.println("Simulation is running...");
 
         // Parameters of Simulation
-        int numberOfCars = 10;
+        int numberOfCars = 6;
         int numStations = 3;
 
         // Queues to the Entrance
         entranceQueue1 = new LinkedBlockingQueue<>();
         entranceQueue2 = new LinkedBlockingQueue<>();
 
+        Hose[] waterHoses = new Hose[numStations-1];
+        Hose[] soapHoses = new Hose[numStations-1];
+
+        for (int i=0; i<numStations-1;i++){
+            waterHoses[i] = new Hose("water");
+            soapHoses[i] = new Hose("soap");
+        }
+
         // Creating Washing Stations
         Station[] stations = new Station[numStations];
         for (int i = 0; i < numStations; i++) {
             stations[i] = new Station();
         }
+
 
         // Create and start the Controller
         Controller controller = new Controller(entranceQueue1, entranceQueue2, stations);
