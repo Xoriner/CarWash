@@ -1,7 +1,6 @@
 package pl.edu.pwr.mrodak.jp.lab04.models;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Controller implements Runnable {
@@ -9,6 +8,7 @@ public class Controller implements Runnable {
     private final BlockingQueue<Car> queue2;
     private final Semaphore[] stations;
     private final AtomicBoolean running = new AtomicBoolean(true);
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private boolean toggle = true; // To alternate between queues
 
     public Controller(BlockingQueue<Car> queue1, BlockingQueue<Car> queue2, Semaphore[] stations) {
@@ -19,6 +19,7 @@ public class Controller implements Runnable {
 
     public void stop() {
         running.set(false);
+        scheduler.shutdown();
     }
 
     @Override
@@ -41,6 +42,13 @@ public class Controller implements Runnable {
                                 car.notify();
                             }
                             System.out.println("Controller let car " + car.getId() + " into station " + (i + 1));
+
+                            // Schedule the release of the station after some time
+                            final int stationIndex = i;
+                            scheduler.schedule(() -> {
+                                stations[stationIndex].release();
+                                System.out.println("Station " + (stationIndex + 1) + " is now free.");
+                            }, 2, TimeUnit.SECONDS);
                             break;
                         }
                     }
