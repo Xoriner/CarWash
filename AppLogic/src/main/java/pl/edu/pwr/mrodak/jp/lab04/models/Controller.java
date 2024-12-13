@@ -45,7 +45,7 @@ public class Controller implements Runnable {
                             break;
                         }
                     }
-               }
+                }
 
                 if (stationFound) {
                     // remove the car from the queue
@@ -71,7 +71,7 @@ public class Controller implements Runnable {
                 }
 
                 // Sleep to simulate time taken to process each car
-                Thread.sleep(100);
+                Thread.sleep(1000);
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
