@@ -6,6 +6,7 @@ public class Car implements Runnable {
     private final int id;
     private final BlockingQueue<Car> entranceQueue;
     private int assignedStationId;
+    private Station assignedStation;
 
     public Car(int id, BlockingQueue<Car> entranceQueue) {
         this.id = id;
@@ -19,6 +20,10 @@ public class Car implements Runnable {
 
     public int getAssignedStationId() {
         return assignedStationId;
+    }
+
+    public void setStation(Station station) {
+        this.assignedStation = station;
     }
 
     public int getId() {
@@ -40,6 +45,12 @@ public class Car implements Runnable {
                 wait();
                 System.out.println("Car " + id + " is being washed.");
             }
+
+            // Washing the car
+            Thread.sleep(5000);
+            assignedStation.getSemaphore().release();
+            System.out.println("Station " + assignedStationId + " is now free.");
+
 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

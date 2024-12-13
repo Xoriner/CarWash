@@ -8,8 +8,11 @@ public class Station {
     private Hose[] waterHoses;
     private Hose[] soapHoses;
 
-    public Station() {
+    public Station(int id, Hose[] waterHoses, Hose[] soapHoses){
+        this.id = id;
         this.semaphore = new Semaphore(1, true);
+        this.waterHoses = waterHoses;
+        this.soapHoses = soapHoses;
     }
 
     public Semaphore getSemaphore() {

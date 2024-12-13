@@ -5,6 +5,8 @@ import pl.edu.pwr.mrodak.jp.lab05.models.Controller;
 import pl.edu.pwr.mrodak.jp.lab05.models.Hose;
 import pl.edu.pwr.mrodak.jp.lab05.models.Station;
 
+import java.lang.invoke.MutableCallSite;
+import java.util.ArrayList;
 import java.util.concurrent.*;
 
 public class CarWashSimulation {
@@ -45,7 +47,24 @@ public class CarWashSimulation {
         // Creating Washing Stations
         Station[] stations = new Station[numStations];
         for (int i = 0; i < numStations; i++) {
-            stations[i] = new Station();
+            int hoseCount = i == 0 || i == numStations - 1 ? 1 : 2;
+            Hose[] _waterHoses = new Hose[hoseCount];
+            Hose[] _soapHoses = new Hose[hoseCount];
+            if (i == 0){
+                _waterHoses[0] = waterHoses[0];
+                _soapHoses[0] = soapHoses[0];
+            }
+            else if (i == numStations-1){
+                _waterHoses[0] = waterHoses[numStations-2];
+                _soapHoses[0] = soapHoses[numStations-2];
+            }
+            else{
+                _waterHoses[0] = waterHoses[i-1];
+                _waterHoses[1] = waterHoses[i];
+                _soapHoses[0] = soapHoses[i-1];
+                _soapHoses[1] = soapHoses[i];
+            }
+            stations[i] = new Station(i, _waterHoses, _soapHoses);
         }
 
 

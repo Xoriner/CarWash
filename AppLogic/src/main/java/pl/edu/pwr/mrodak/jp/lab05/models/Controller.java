@@ -50,15 +50,16 @@ public class Controller implements Runnable {
                     synchronized (car) {
                         System.out.println("Controller let car " + car.getId() + " into station " + foundStationId);
                         car.setAssignedStationId(foundStationId);
+                        car.setStation(stations[foundStationId]);
                         car.notify();
                     }
 
                     // Schedule the release of the station
-                    int finalFoundStationId = foundStationId;
-                    scheduler.schedule(() -> {
-                        stations[finalFoundStationId].getSemaphore().release();
-                        System.out.println("Station " + finalFoundStationId + " is now free.");
-                    }, 10, TimeUnit.SECONDS);
+//                    int finalFoundStationId = foundStationId;
+//                    scheduler.schedule(() -> {
+//                        stations[finalFoundStationId].getSemaphore().release();
+//                        System.out.println("Station " + finalFoundStationId + " is now free.");
+//                    }, 10, TimeUnit.SECONDS);
                 }
 
                 // Sleep to simulate time taken to process each car
