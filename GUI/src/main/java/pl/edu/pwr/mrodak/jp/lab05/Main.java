@@ -4,7 +4,14 @@ import pl.edu.pwr.mrodak.jp.lab05.logic.CarWashSimulation;
 
 public class Main {
     public static void main(String[] args) {
-        CarWashSimulation simulation = new CarWashSimulation(3,5);
+        ConfigWindow configWindow = new ConfigWindow();
+        configWindow.createAndShowConfigWindow();
+
+        //Parameters of simulations from user
+        int numStations = configWindow.getNumStations();
+        int numberOfCars = configWindow.getNumberOfCars();
+
+        CarWashSimulation simulation = new CarWashSimulation(numStations,numberOfCars);
 
         // Step 1: Initialize the simulation setup
         simulation.runSimulationSetup();
