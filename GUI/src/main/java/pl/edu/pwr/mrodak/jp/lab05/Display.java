@@ -144,7 +144,7 @@ public class Display extends JFrame implements Runnable {
                 updateQueueArea(queue1Area, queue1);
                 updateQueueArea(queue2Area, queue2);
                 updateStationPanel();
-                // Wait 3 seconds before updating
+                // Wait 100  milliseconds before updating
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
