@@ -25,4 +25,8 @@ public class Station {
     public Hose[] getWaterHoses() {
         return waterHoses;
     }
+
+    public int getId() {
+        return id;
+    }
 }

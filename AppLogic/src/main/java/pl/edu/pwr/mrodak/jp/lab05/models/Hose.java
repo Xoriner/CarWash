@@ -23,4 +23,8 @@ public class Hose {
     public Semaphore getSemaphore() {
         return semaphore;
     }
+
+    public String getType() {
+        return type;
+    }
 }

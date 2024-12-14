@@ -63,7 +63,7 @@ public class Controller implements Runnable {
                 }
 
                 // Sleep to simulate time taken to process each car
-                Thread.sleep(1000);
+                Thread.sleep(10000);
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
