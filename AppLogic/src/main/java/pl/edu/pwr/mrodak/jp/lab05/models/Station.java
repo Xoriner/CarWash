@@ -18,4 +18,11 @@ public class Station {
     public Semaphore getSemaphore() {
         return semaphore;
     }
+
+    public Hose[] getSoapHoses() {
+        return soapHoses;
+    }
+    public Hose[] getWaterHoses() {
+        return waterHoses;
+    }
 }
