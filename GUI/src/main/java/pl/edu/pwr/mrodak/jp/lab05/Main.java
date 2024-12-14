@@ -4,7 +4,7 @@ import pl.edu.pwr.mrodak.jp.lab05.logic.CarWashSimulation;
 
 public class Main {
     public static void main(String[] args) {
-        CarWashSimulation simulation = new CarWashSimulation();
+        CarWashSimulation simulation = new CarWashSimulation(3,5);
 
         // Step 1: Initialize the simulation setup
         simulation.runSimulationSetup();

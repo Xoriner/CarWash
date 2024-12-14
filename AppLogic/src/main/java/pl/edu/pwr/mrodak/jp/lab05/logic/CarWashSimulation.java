@@ -8,9 +8,16 @@ import pl.edu.pwr.mrodak.jp.lab05.models.Station;
 import java.util.concurrent.*;
 
 public class CarWashSimulation {
+    private int numStations;
+    private int numberOfCars;
     private BlockingQueue<Car> entranceQueue1;
     private BlockingQueue<Car> entranceQueue2;
     private Station[] stations;
+
+    public CarWashSimulation(int numStations, int numberOfCars) {
+        this.numStations = numStations;
+        this.numberOfCars = numberOfCars;
+    }
 
     public BlockingQueue<Car> getEntranceQueue1() {
         return entranceQueue1;
@@ -27,9 +34,6 @@ public class CarWashSimulation {
     // Setup phase
     public void runSimulationSetup() {
         System.out.println("Setting up simulation...");
-
-        // Parameters of Simulation
-        int numStations = 3;
 
         // Initialize Queues
         entranceQueue1 = new LinkedBlockingQueue<>();
@@ -67,9 +71,6 @@ public class CarWashSimulation {
 
     // Simulation logic phase
     public void runSimulationLogic() {
-
-        // Parameters of Simulation
-        int numberOfCars = 5;
 
         // Create and start the Controller
         Controller controller = new Controller(entranceQueue1, entranceQueue2, stations);
