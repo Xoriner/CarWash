@@ -38,6 +38,9 @@ public class Display extends JFrame implements Runnable {
 
         add(createQueuePanel(), BorderLayout.WEST);
         add(new JScrollPane(stationPanel), BorderLayout.CENTER);
+
+        setLocationRelativeTo(null); // This centers the window
+
         setVisible(true);
     }
 

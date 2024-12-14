@@ -40,6 +40,9 @@ public class ConfigWindow extends JFrame {
         frame.add(stationPanel);
         frame.add(startButton);
 
+        // Center the window on the screen
+        frame.setLocationRelativeTo(null); // This centers the window
+
         // Make the frame modal-like (blocking the main thread)
         frame.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE); // Only for Java 9 and above
 
