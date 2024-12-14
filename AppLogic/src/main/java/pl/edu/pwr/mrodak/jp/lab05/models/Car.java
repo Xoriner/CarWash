@@ -43,10 +43,16 @@ public class Car implements Runnable {
                 System.out.println("Car " + id + " is entering station " + assignedStationId);
             }
 
+            // Notify the station about the current car
+            assignedStation.setCurrentCar(this);
+
             // Sequentially use hoses in the station
             useHoseSequentially("water");
             useHoseSequentially("soap");
             useHoseSequentially("water (final rinse)");
+
+            // Clear the current car from the station
+            assignedStation.setCurrentCar(null);
 
             // Release the station
             assignedStation.getSemaphore().release();
@@ -56,6 +62,7 @@ public class Car implements Runnable {
             Thread.currentThread().interrupt();
         }
     }
+
 
     private void useHoseSequentially(String type) throws InterruptedException {
         Hose[] hoses = type.contains("water") ? assignedStation.getWaterHoses() : assignedStation.getSoapHoses();

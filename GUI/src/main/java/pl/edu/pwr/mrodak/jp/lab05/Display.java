@@ -103,6 +103,14 @@ public class Display extends JFrame implements Runnable {
     private String getStationInfo(Station station) {
         StringBuilder info = new StringBuilder();
 
+        info.append("Current Car: ");
+        Car currentCar = station.getCurrentCar();
+        if (currentCar != null) {
+            info.append("Car ").append(currentCar.getId()).append("\n");
+        } else {
+            info.append("(none)\n");
+        }
+
         info.append("Water Hoses:\n");
         appendHoseInfo(info, station.getWaterHoses());
 
