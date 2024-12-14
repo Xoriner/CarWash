@@ -13,7 +13,7 @@ public class Display extends JFrame implements Runnable {
     private final BlockingQueue<Car> queue1;
     private final BlockingQueue<Car> queue2;
     private final Station[] stations;
-    private volatile boolean running = true; // Flag to stop the display thread
+    private volatile boolean running = true; // Flag to stop the display thread from running
 
     private JTextArea queue1Area;
     private JTextArea queue2Area;
