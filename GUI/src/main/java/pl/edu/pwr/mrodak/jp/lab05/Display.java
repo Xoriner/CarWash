@@ -38,7 +38,6 @@ public class Display extends JFrame implements Runnable {
 
         add(createQueuePanel(), BorderLayout.WEST);
         add(new JScrollPane(stationPanel), BorderLayout.CENTER);
-
         setVisible(true);
     }
 
@@ -122,7 +121,13 @@ public class Display extends JFrame implements Runnable {
 
     private void appendHoseInfo(StringBuilder info, Hose[] hoses) {
         for (Hose hose : hoses) {
-            String status = hose.getSemaphore().availablePermits() > 0 ? "(free)" : "(in use)";
+            String status;
+            Car currentCar = hose.getCurrentCar();
+            if (currentCar != null) {
+                status = "(in use by Car " + currentCar.getId() + ")";
+            } else {
+                status = "(free)";
+            }
             info.append(hose.getType()).append(" ").append(status).append("\n");
         }
     }
@@ -139,9 +144,8 @@ public class Display extends JFrame implements Runnable {
                 updateQueueArea(queue1Area, queue1);
                 updateQueueArea(queue2Area, queue2);
                 updateStationPanel();
-
                 // Wait 3 seconds before updating
-                Thread.sleep(300);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

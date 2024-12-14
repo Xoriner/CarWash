@@ -87,13 +87,18 @@ public class Car implements Runnable {
             }
         }
 
+        // Notify the hose that it is in use by this car
+        acquiredHose.setCurrentCar(this);
+
         // Use the hose
         System.out.println("Car " + id + " is using " + type + " hose.");
-        Thread.sleep(5000); // Simulate time to use the hose
+        Thread.sleep(2500); // Simulate time to use the hose
 
         // Release the hose
+        acquiredHose.setCurrentCar(null); // Clear the hose's current car
         acquiredHose.getSemaphore().release();
         System.out.println("Car " + id + " has released " + type + " hose.");
     }
+
 }
 
