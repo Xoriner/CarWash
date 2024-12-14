@@ -61,7 +61,7 @@ public class Car implements Runnable {
                 System.out.println("Station " + assignedStationId + " is now free.");
 
                 // Simulate time before rejoining the queue
-                Thread.sleep(5000); // Wait for 5 seconds before rejoining the queue
+                Thread.sleep(10000); // Wait for 5 seconds before rejoining the queue
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -89,7 +89,7 @@ public class Car implements Runnable {
 
         // Use the hose
         System.out.println("Car " + id + " is using " + type + " hose.");
-        Thread.sleep(2000); // Simulate time to use the hose
+        Thread.sleep(5000); // Simulate time to use the hose
 
         // Release the hose
         acquiredHose.getSemaphore().release();

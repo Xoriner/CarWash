@@ -67,7 +67,6 @@ public class CarWashSimulation {
 
     // Simulation logic phase
     public void runSimulationLogic() {
-        System.out.println("Starting simulation logic...");
 
         // Parameters of Simulation
         int numberOfCars = 5;
@@ -86,13 +85,12 @@ public class CarWashSimulation {
             Car car = new Car(i, shortestQueue);
             carThreadPool.submit(car);
             try {
-                Thread.sleep(1000 + ThreadLocalRandom.current().nextInt(1000));
+                Thread.sleep(2000 + ThreadLocalRandom.current().nextInt(1000));
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
 
-        // Shutdown the thread pool after finishing
         // Shutdown the thread pool after finishing
         carThreadPool.shutdown();
         try {
