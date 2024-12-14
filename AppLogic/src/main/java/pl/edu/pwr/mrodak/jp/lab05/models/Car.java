@@ -62,12 +62,10 @@ public class Car implements Runnable {
         Hose acquiredHose = null;
 
         while (acquiredHose == null) {
-            synchronized (hoses) {
-                for (Hose hose : hoses) {
-                    if (hose.getSemaphore().tryAcquire()) {
-                        acquiredHose = hose;
-                        break;
-                    }
+            for (Hose hose : hoses) {
+                if (hose.getSemaphore().tryAcquire()) {
+                    acquiredHose = hose;
+                    break;
                 }
             }
 
