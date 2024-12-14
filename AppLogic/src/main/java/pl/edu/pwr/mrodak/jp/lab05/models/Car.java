@@ -31,38 +31,42 @@ public class Car implements Runnable {
 
     @Override
     public void run() {
-        try {
-            System.out.println("Car " + id + " arrives at the car wash.");
-            entranceQueue.put(this); // Join the entrance queue
+        while (!Thread.currentThread().isInterrupted()) { // Keep looping until interrupted
+            try {
+                System.out.println("Car " + id + " arrives at the car wash.");
+                entranceQueue.put(this); // Join the entrance queue
 
-            System.out.println("Car " + id + " joined queue at entrance.");
+                System.out.println("Car " + id + " joined queue at entrance.");
 
-            // Wait for the controller to notify
-            synchronized (this) {
-                wait();
-                System.out.println("Car " + id + " is entering station " + assignedStationId);
+                // Wait for the controller to notify
+                synchronized (this) {
+                    wait();
+                    System.out.println("Car " + id + " is entering station " + assignedStationId);
+                }
+
+                // Notify the station about the current car
+                assignedStation.setCurrentCar(this);
+
+                // Sequentially use hoses in the station
+                useHoseSequentially("water");
+                useHoseSequentially("soap");
+                useHoseSequentially("water (final rinse)");
+
+                // Clear the current car from the station
+                assignedStation.setCurrentCar(null);
+
+                // Release the station
+                assignedStation.getSemaphore().release();
+                System.out.println("Car " + id + " finished washing at station " + assignedStationId);
+                System.out.println("Station " + assignedStationId + " is now free.");
+
+                // Simulate time before rejoining the queue
+                Thread.sleep(5000); // Wait for 5 seconds before rejoining the queue
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
-
-            // Notify the station about the current car
-            assignedStation.setCurrentCar(this);
-
-            // Sequentially use hoses in the station
-            useHoseSequentially("water");
-            useHoseSequentially("soap");
-            useHoseSequentially("water (final rinse)");
-
-            // Clear the current car from the station
-            assignedStation.setCurrentCar(null);
-
-            // Release the station
-            assignedStation.getSemaphore().release();
-            System.out.println("Car " + id + " finished washing at station " + assignedStationId);
-            System.out.println("Station " + assignedStationId + " is now free.");
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
         }
     }
-
 
     private void useHoseSequentially(String type) throws InterruptedException {
         Hose[] hoses = type.contains("water") ? assignedStation.getWaterHoses() : assignedStation.getSoapHoses();
@@ -92,3 +96,4 @@ public class Car implements Runnable {
         System.out.println("Car " + id + " has released " + type + " hose.");
     }
 }
+
